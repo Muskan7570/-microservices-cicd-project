@@ -1,0 +1,26 @@
+pipeline {
+  agent any
+  environment {
+    DOCKERHUB_REPO = "muskan7570/product_service"
+  }
+  stages {
+    stage('Checkout') {
+      steps { checkout scm }
+    }
+    stage('Build Docker Image') {
+      steps {
+        sh 'cd services/product_service && docker build -t $DOCKERHUB_REPO:$BUILD_NUMBER .'
+      }
+    }
+    stage('Push to Docker Hub') {
+      steps {
+        withCredentials([usernamePassword(credentialsId: 'dockerhub-creds', usernameVariable: 'USER', passwordVariable: 'PASS')]) {
+          sh '''
+            echo $PASS | docker login -u $USER --password-stdin
+            docker push $DOCKERHUB_REPO:$BUILD_NUMBER
+          '''
+        }
+      }
+    }
+  }
+}
