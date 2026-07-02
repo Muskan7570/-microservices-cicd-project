@@ -1,7 +1,7 @@
 pipeline {
   agent any
   environment {
-    DOCKERHUB_REPO = "muskan7570/product_service"
+    DOCKERHUB_REPO = "muskan7570/product-service"
   }
   stages {
     stage('Checkout') {
@@ -9,7 +9,7 @@ pipeline {
     }
     stage('Build Docker Image') {
       steps {
-        sh 'cd services/product_service && docker build -t $DOCKERHUB_REPO:$BUILD_NUMBER .'
+        sh 'cd services/product-service && docker build -t $DOCKERHUB_REPO:$BUILD_NUMBER .'
       }
     }
     stage('Push to Docker Hub') {
