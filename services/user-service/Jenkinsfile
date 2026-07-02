@@ -9,7 +9,7 @@ pipeline {
     }
     stage('Build Docker Image') {
       steps {
-        sh 'docker build -t $DOCKERHUB_REPO:$BUILD_NUMBER .'
+        sh 'cd services/user-service && docker build -t $DOCKERHUB_REPO:$BUILD_NUMBER .'
       }
     }
     stage('Push to Docker Hub') {
